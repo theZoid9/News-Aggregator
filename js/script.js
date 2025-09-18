@@ -1,17 +1,14 @@
 
-
-const BASE_URL = "https://newsapi.org/v2/top-headlines";
-
 const container = document.getElementById("newsContainer");
 
 const searchInput = document.getElementById("searchInput");
-
+const API_BASE = "http://localhost:3000";
 // fetch news by category(default sports)
 
 async function fetchNews(category = "sports") {
     try{
-        const res = await fetch(`${BASE_URL}?country=us&category=${category}&apiKey=${API_KEY}`);
-const data = await res.json();
+        const res = await fetch(`${API_BASE}/api/news?category=${category}`);
+        const data = await res.json();
     displayArticles(data.articles);
   } catch (error) {
     console.error("Error fetching news:", error);
@@ -22,7 +19,7 @@ const data = await res.json();
 // Search function
 async function searchNews(query) {
   try {
-    const res = await fetch(`https://newsapi.org/v2/everything?q=${query}&apiKey=${API_KEY}`);
+    const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(query)}`);
     const data = await res.json();
     displayArticles(data.articles);
   } catch (error) {
