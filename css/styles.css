@@ -1,0 +1,80 @@
+* {
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+
+}
+
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: rgb(255, 255, 255);
+    border: 2px solid black;
+}
+
+header input {
+    padding: 0.5rem;
+    border-radius: 6px;
+
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    background-color: rgb(175, 186, 196);
+    padding: 0.5rem 0;
+
+}
+
+nav button {
+    background-color: rgb(255, 255, 255);
+    border: 2px solid black;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+}
+
+
+main {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+    gap:1;
+    padding: 1rem;
+}
+
+.news-card {
+    background-color: rgba(255, 254, 251, 0.877);
+    border: 2px solid black;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgb(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+
+.news-card img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}
+
+.news-card h2 {
+    font-size: 1.1rem;
+    margin:0.5rem 0;
+}
+
+.news-card a {
+    margin-top: auto;
+    color: rgb(0, 0, 0);
+
+}
