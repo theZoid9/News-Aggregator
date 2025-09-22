@@ -13,6 +13,11 @@ header {
   padding: 20px 0;
 }
 
+.title {
+    font-size: 7rem;
+    margin: 0;
+}
+
 nav {
   display: flex;
   justify-content: center;
