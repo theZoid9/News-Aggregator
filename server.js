@@ -20,6 +20,9 @@ app.use(express.static(__dirname)); // <-- put your index.html, JS, CSS in /publ
 
 app.get("/api/news", async (req, res) => {
   const category = req.query.category || "sports";
+    const url = `${BASE_URL}?country=us&category=${category}&apiKey=${API_KEY}`;
+  console.log("🔗 Fetching URL:", url);
+  console.log("🔑 API Key present?", !!API_KEY);
 
   try {
     const response = await fetch(
@@ -72,3 +75,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () =>
   console.log(`✅ Server running on port ${PORT}`)
 );
+
+console.log("🔑 API Key exists:", !!API_KEY);
