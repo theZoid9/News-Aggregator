@@ -2,7 +2,10 @@
 const container = document.getElementById("newsContainer");
 
 const searchInput = document.getElementById("searchInput");
-const API_BASE = "http://localhost:3000";
+const API_BASE =
+  window.location.hostname === "localhost"
+    ? "http://localhost:3000"
+    : "https://news-aggregator-hp1q.onrender.com";
 // fetch news by category(default sports)
 
 async function fetchNews(category = "sports") {

@@ -9,13 +9,13 @@ body{
 
 }
 
-header{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    background-color: rgb(255, 255, 255);
-    border: 2px solid black;
+
+
+header {
+    display:flex;
+    justify-content: center;
+    border: 2px solid red;
+
 }
 
 header input {
@@ -31,6 +31,11 @@ nav {
     background-color: rgb(175, 186, 196);
     padding: 0.5rem 0;
 
+}
+
+#searchInput {
+   display: flex;
+   border: 3px solid red;
 }
 
 nav button {
