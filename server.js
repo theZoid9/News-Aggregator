@@ -23,17 +23,17 @@ app.get("/api/news", async (req, res) => {
     const url = `${BASE_URL}?country=us&category=${category}&apiKey=${API_KEY}`;
   console.log("🔗 Fetching URL:", url);
   console.log("🔑 API Key present?", !!API_KEY);
-  const response = await fetch(url);
-console.log("Status:", response.status);
-console.log("Headers:", response.headers.raw());
-const text = await response.text();
-console.log("Response starts with:", text.slice(0, 200));
-
+  
 
   try {
-    const response = await fetch(
-      `${BASE_URL}?country=us&category=${category}&apiKey=${API_KEY}`
-    );
+    const response = await fetch(url);
+        // <-- ADD THESE LINES TO LOG RAW RESPONSE -->
+    console.log("Status:", response.status);
+    console.log("Headers:", response.headers.raw());
+    const text = await response.text();  // read response as text
+    console.log("Response starts with:", text.slice(0, 200)); // first 200 chars
+
+ 
     const data = await response.json();
     res.json(data);
   } catch (err) {
