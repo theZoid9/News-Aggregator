@@ -1,32 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>News Aggregator</title>
-    <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Square - News Aggregator</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <header>
-        <h1>The Square</h1>
-      
-    </header>
+  <header>
+    <h1>The Square</h1>
+  </header>
 
-    <nav>
-        <input type="text" id="searchInput" placeholder="Search news...">
-        <button data-category="sport" class="active">Sports</button>
-        <button data-category="technology">Technology</button>
-        <button data-category="business" >Business</button>
-        <button data-category="entertainment">Entertainment</button>
-    </nav>
-    <main id="newsContainer">
-        <!--article will load here-->
-    </main>
+  <nav>
+    <input type="text" id="searchInput" placeholder="Search news...">
 
+    <!-- GNews categories -->
+    <button data-category="world" class="active">World</button>
+    <button data-category="nation">Nation</button>
+    <button data-category="business">Business</button>
+    <button data-category="technology">Technology</button>
+    <button data-category="entertainment">Entertainment</button>
+    <button data-category="sports">Sports</button>
+    <button data-category="science">Science</button>
+    <button data-category="health">Health</button>
+  </nav>
 
-    <footer><p>Powered by NewsAPI</p></footer>
+  <main id="newsContainer">
+    <!-- Articles will be dynamically loaded here -->
+     <div class="news-card">
+  <img src="IMAGE_URL" alt="News image">
+  <div class="news-content">
+    <h2>Title</h2>
+    <p>Description</p>
+    <small>Source | Date</small>
+    <a href="URL" target="_blank">Read More</a>
+  </div>
+</div>
+  </main>
 
-    <script src="js/script.js"></script>
-    
+  <footer>
+    <p>Powered by <a href="https://gnews.io/" target="_blank">GNews API</a></p>
+  </footer>
+
+  <script src="js/script.js"></script>
 </body>
 </html>
