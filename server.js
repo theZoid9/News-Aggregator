@@ -63,8 +63,8 @@ app.get("/api/search", async (req, res) => {
 });
 
 // --- Fallback: Serve index.html for any other route (for SPAs) ---
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 // --- Use Render-assigned port ---
