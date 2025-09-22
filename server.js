@@ -23,6 +23,12 @@ app.get("/api/news", async (req, res) => {
     const url = `${BASE_URL}?country=us&category=${category}&apiKey=${API_KEY}`;
   console.log("🔗 Fetching URL:", url);
   console.log("🔑 API Key present?", !!API_KEY);
+  const response = await fetch(url);
+console.log("Status:", response.status);
+console.log("Headers:", response.headers.raw());
+const text = await response.text();
+console.log("Response starts with:", text.slice(0, 200));
+
 
   try {
     const response = await fetch(
