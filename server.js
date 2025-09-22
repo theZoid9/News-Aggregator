@@ -5,36 +5,43 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 
-const BASE_URL = "https://newsapi.org/v2/top-headlines";
-const API_KEY = process.env.MY_API_KEY;
+const BASE_URL = "https://gnews.io/api/v4";
+const API_KEY = process.env.MY_GNEWS_KEY; // <-- Use your GNews API key here
 
 const app = express();
 app.use(cors());
 
-// --- Serve frontend files (optional but recommended) ---
+// --- Serve frontend files ---
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use(express.static(__dirname)); // <-- put your index.html, JS, CSS in /public
+app.use(express.static(__dirname)); // index.html, JS, CSS in root
 
 // --- API ROUTES ---
 
+// Fetch news by category
 app.get("/api/news", async (req, res) => {
   const category = req.query.category || "sports";
-    const url = `${BASE_URL}?country=us&category=${category}&apiKey=${API_KEY}`;
+  const url = `${BASE_URL}/top-headlines?topic=${category}&lang=en&country=us&token=${API_KEY}`;
+  
   console.log("🔗 Fetching URL:", url);
   console.log("🔑 API Key present?", !!API_KEY);
-  
 
   try {
     const response = await fetch(url);
-        // <-- ADD THESE LINES TO LOG RAW RESPONSE -->
+
     console.log("Status:", response.status);
     console.log("Headers:", response.headers.raw());
-    const text = await response.text();  // read response as text
-    console.log("Response starts with:", text.slice(0, 200)); // first 200 chars
+    const text = await response.text();
+    console.log("Response starts with:", text.slice(0, 200));
 
- 
-    const data = await response.json();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (jsonErr) {
+      console.error("❌ Failed to parse JSON:", jsonErr.message);
+      return res.status(500).json({ error: "Invalid response from GNews" });
+    }
+
     res.json(data);
   } catch (err) {
     console.error("Backend news fetch error:", err);
@@ -42,26 +49,24 @@ app.get("/api/news", async (req, res) => {
   }
 });
 
+// Search news
 app.get("/api/search", async (req, res) => {
   const query = req.query.q;
-  if (!query) {
-    return res
-      .status(400)
-      .json({ error: "Query parameter 'q' is required" });
-  }
+  if (!query) return res.status(400).json({ error: "Query parameter 'q' is required" });
+
+  const url = `${BASE_URL}/search?q=${encodeURIComponent(query)}&lang=en&country=us&token=${API_KEY}`;
+  
+  console.log("🔗 Searching URL:", url);
 
   try {
-    const response = await fetch(
-      `https://newsapi.org/v2/everything?q=${encodeURIComponent(
-        query
-      )}&apiKey=${API_KEY}`
-    );
-    const data = await response.json();
-
-    if (data.status !== "ok") {
-      return res
-        .status(500)
-        .json({ error: "Failed to fetch news from API" });
+    const response = await fetch(url);
+    const text = await response.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (jsonErr) {
+      console.error("❌ Failed to parse JSON:", jsonErr.message);
+      return res.status(500).json({ error: "Invalid response from GNews" });
     }
 
     res.json(data);
@@ -71,15 +76,13 @@ app.get("/api/search", async (req, res) => {
   }
 });
 
-// --- Fallback: Serve index.html for any other route (for SPAs) ---
+// --- Fallback: Serve index.html ---
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// --- Use Render-assigned port ---
+// --- Render port ---
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () =>
-  console.log(`✅ Server running on port ${PORT}`)
-);
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
 
 console.log("🔑 API Key exists:", !!API_KEY);
