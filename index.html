@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Square - News Aggregator</title>
+  <title>The Square News</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -13,33 +13,15 @@
 
   <nav>
     <input type="text" id="searchInput" placeholder="Search news...">
-
-    <!-- GNews categories -->
-    <button data-category="world" class="active">World</button>
-    <button data-category="nation">Nation</button>
-    <button data-category="business">Business</button>
-    <button data-category="technology">Technology</button>
-    <button data-category="entertainment">Entertainment</button>
-    <button data-category="sports">Sports</button>
-    <button data-category="science">Science</button>
-    <button data-category="health">Health</button>
+    <!-- Category buttons will be dynamically inserted -->
   </nav>
 
   <main id="newsContainer">
-    <!-- Articles will be dynamically loaded here -->
-     <div class="news-card">
-  <img src="IMAGE_URL" alt="News image">
-  <div class="news-content">
-    <h2>Title</h2>
-    <p>Description</p>
-    <small>Source | Date</small>
-    <a href="URL" target="_blank">Read More</a>
-  </div>
-</div>
+    <!-- Top article + grid articles go here -->
   </main>
 
   <footer>
-    <p>Powered by <a href="https://gnews.io/" target="_blank">GNews API</a></p>
+    <p>Powered by GNews API</p>
   </footer>
 
   <script src="js/script.js"></script>

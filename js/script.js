@@ -1,98 +1,108 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const container = document.getElementById("newsContainer");
-  const searchInput = document.getElementById("searchInput");
+const container = document.getElementById("newsContainer");
+const searchInput = document.getElementById("searchInput");
 
-  const API_BASE =
-    window.location.hostname === "localhost"
-      ? "http://localhost:3000"
-      : "https://news-aggregator-hp1q.onrender.com";
+const API_BASE =
+  window.location.hostname === "localhost"
+    ? "http://localhost:3000"
+    : "https://news-aggregator-hp1q.onrender.com";
 
-  // --- Topics supported by GNews ---
-  const topics = [
-    "world",
-    "nation",
-    "business",
-    "technology",
-    "entertainment",
-    "sports",
-    "science",
-    "health"
-  ];
+// Topics
+const topics = ["world", "nation", "business", "technology", "entertainment", "sports", "science", "health"];
 
-  // Ensure HTML buttons match GNews topics
-  const navButtons = document.querySelectorAll("nav button");
+// Dynamically create category buttons
+const nav = document.querySelector("nav");
+topics.forEach((topic, i) => {
+  const btn = document.createElement("button");
+  btn.textContent = topic.charAt(0).toUpperCase() + topic.slice(1);
+  btn.dataset.category = topic;
+  if (i === 0) btn.classList.add("active");
+  nav.appendChild(btn);
+});
 
-  // Attach category button event listeners
-  navButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const activeBtn = document.querySelector("nav button.active");
-      if (activeBtn) activeBtn.classList.remove("active");
-      btn.classList.add("active");
-      fetchNews(btn.dataset.category);
-    });
-  });
+// Fetch news
+async function fetchNews(category = "world") {
+  try {
+    const res = await fetch(`${API_BASE}/api/news?category=${category}`);
+    const data = await res.json();
+    displayArticles(data.articles || []);
+  } catch (error) {
+    console.error("Error fetching news:", error);
+    container.innerHTML = "<p>Failed to load news. Try again later.</p>";
+  }
+}
 
-  // Fetch news by category (default: first active button)
-  async function fetchNews(category) {
-    try {
-      const res = await fetch(`${API_BASE}/api/news?category=${category}`);
-      const data = await res.json();
-      displayArticles(data.articles);
-    } catch (error) {
-      console.error("Error fetching news:", error);
-      container.innerHTML = "<p>Failed to load news. Try again later.</p>";
-    }
+// Search
+async function searchNews(query) {
+  try {
+    const res = await fetch(`${API_BASE}/api/search?q=${encodeURIComponent(query)}`);
+    const data = await res.json();
+    displayArticles(data.articles || []);
+  } catch (error) {
+    console.error("Search failed:", error);
+    container.innerHTML = "<p>Search failed. Try again later.</p>";
+  }
+}
+
+// Display articles
+function displayArticles(articles) {
+  container.innerHTML = "";
+  if (!articles.length) {
+    container.innerHTML = "<p>No news found.</p>";
+    return;
   }
 
-  // Search function
-  async function searchNews(query) {
-    try {
-      const res = await fetch(
-        `${API_BASE}/api/search?q=${encodeURIComponent(query)}`
-      );
-      const data = await res.json();
-      displayArticles(data.articles);
-    } catch (error) {
-      console.error("Search failed:", error);
-      container.innerHTML = "<p>Search failed. Try again later.</p>";
-    }
-  }
+  // Top article
+  const top = articles[0];
+  const topCard = document.createElement("div");
+  topCard.classList.add("news-card", "top-article");
+  topCard.innerHTML = `
+    <img src="${top.image || 'assets/placeholder.png'}" alt="Top news">
+    <div class="news-content">
+      <h2>${top.title}</h2>
+      <p>${top.description || ""}</p>
+      <small>Source: ${top.source?.name || "Unknown"} | ${new Date(top.publishedAt).toLocaleDateString()}</small>
+      <a href="${top.url}" target="_blank">Read More</a>
+    </div>
+  `;
+  container.appendChild(topCard);
 
-  // Display articles dynamically
-  function displayArticles(articles) {
-    container.innerHTML = "";
-    if (!articles || articles.length === 0) {
-      container.innerHTML = "<p>No news found.</p>";
-      return;
-    }
+  // Grid of other articles
+  if (articles.length > 1) {
+    const grid = document.createElement("div");
+    grid.classList.add("articles-grid");
 
-    articles.forEach((article) => {
+    articles.slice(1).forEach(article => {
       const card = document.createElement("div");
       card.classList.add("news-card");
-
-    card.innerHTML = `
-      <img src="${article.image || 'assets/placeholder.png'}" alt="News image">
-      <div class="news-content">
-        <h2>${article.title}</h2>
-        <p>${article.description || ''}</p>
-        <small>Source: ${article.source?.name || 'Unknown'} | ${new Date(article.publishedAt).toLocaleDateString()}</small>
-        <a href="${article.url}" target="_blank">Read More</a>
-      </div>
-    `;
-
-      container.appendChild(card);
+      card.innerHTML = `
+        <img src="${article.image || 'assets/placeholder.png'}" alt="News image">
+        <div class="news-content">
+          <h3>${article.title}</h3>
+          <p>${article.description || ""}</p>
+          <small>Source: ${article.source?.name || "Unknown"} | ${new Date(article.publishedAt).toLocaleDateString()}</small>
+          <a href="${article.url}" target="_blank">Read More</a>
+        </div>
+      `;
+      grid.appendChild(card);
     });
+
+    container.appendChild(grid);
   }
+}
 
-  // Handle search input
-  searchInput.addEventListener("keyup", (e) => {
-    if (e.key === "Enter") {
-      searchNews(e.target.value);
-    }
+// Handle category clicks
+document.querySelectorAll("nav button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelector("nav button.active")?.classList.remove("active");
+    btn.classList.add("active");
+    fetchNews(btn.dataset.category);
   });
-
-  // Load default category on start (first active button)
-  const defaultBtn = document.querySelector("nav button.active");
-  const defaultCategory = defaultBtn?.dataset.category || "world";
-  fetchNews(defaultCategory);
 });
+
+// Search input
+searchInput.addEventListener("keyup", e => {
+  if (e.key === "Enter") searchNews(e.target.value);
+});
+
+// Load default category
+fetchNews("world");
