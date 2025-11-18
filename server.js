@@ -23,8 +23,8 @@ app.get("/api/news", async (req, res) => {
   const category = req.query.category || "sports";
   const url = `${BASE_URL}/top-headlines?topic=${category}&lang=en&country=us&token=${API_KEY}`;
   
-  console.log("🔗 Fetching URL:", url);
-  console.log("🔑 API Key present?", !!API_KEY);
+  console.log(" Fetching URL:", url);
+  console.log("API Key present?", !!API_KEY);
 
   try {
     const response = await fetch(url);
@@ -56,7 +56,7 @@ app.get("/api/search", async (req, res) => {
 
   const url = `${BASE_URL}/search?q=${encodeURIComponent(query)}&lang=en&country=us&token=${API_KEY}`;
   
-  console.log("🔗 Searching URL:", url);
+  console.log("Searching URL:", url);
 
   try {
     const response = await fetch(url);
@@ -65,7 +65,7 @@ app.get("/api/search", async (req, res) => {
     try {
       data = JSON.parse(text);
     } catch (jsonErr) {
-      console.error("❌ Failed to parse JSON:", jsonErr.message);
+      console.error("Failed to parse JSON:", jsonErr.message);
       return res.status(500).json({ error: "Invalid response from GNews" });
     }
 
@@ -83,6 +83,5 @@ app.use((req, res) => {
 
 // --- Render port ---
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-console.log("🔑 API Key exists:", !!API_KEY);

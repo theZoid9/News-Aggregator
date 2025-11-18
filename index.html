@@ -3,27 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Square News</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <title>TechNews - Newspaper Style</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <header>
-    <h1 class="title">Tech Square</h1>
-  </header>
+<body class="bg-gray-100 text-gray-900 font-serif">
 
-  <nav>
-    <input type="text" id="searchInput" placeholder="Search news...">
-    <!-- Category buttons will be dynamically inserted -->
+  <nav class="bg-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16 items-center">
+        <a href="#" class="text-3xl font-bold tracking-wide text-black">TechNews</a>
+      </div>
+    </div>
   </nav>
 
-  <main id="newsContainer">
-    <!-- Top article + grid articles go here -->
+
+ 
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+  <div id="articles-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <!-- Articles will be dynamically inserted here -->
+  </div>
   </main>
 
-  <footer>
-    <p>Powered by GNews API</p>
-  </footer>
 
+  <footer class="bg-white shadow-inner py-6 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-600">
+      &copy; 2025 TechNews. All rights reserved.
+    </div>
+  </footer>
   <script src="js/script.js"></script>
 </body>
 </html>
